@@ -3,6 +3,7 @@ package orderTest;
 import io.qameta.allure.Description;
 import io.restassured.response.ValidatableResponse;
 import order.OrderApi;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import user.User;
@@ -28,6 +29,13 @@ public class GetOrderTest {
         UserAPI.createUser(testUser);
         ValidatableResponse loginResponse = UserAPI.loginUser(testUser, "");
         accessToken = loginResponse.extract().path("accessToken");
+    }
+
+    @After
+    public void tearDown() {
+        if (testUser != null) {
+            UserAPI.deleteUser(accessToken).statusCode(202);
+        }
     }
 
     @Test
